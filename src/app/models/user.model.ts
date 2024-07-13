@@ -4,7 +4,7 @@ export class UserModel{
     userName: string = "";
     email: string = "";
     firstName:string="";
-    lastNamme:string="";
+    lastName:string="";
     password:string="";
     fullName:string="";
 }

@@ -1,10 +1,10 @@
-<app-blank pageName="Examples" [routes]="['Examples']">
-    <app-section sectionTitle="Example Listesi">
+<app-blank pageName="Kullanıcılar" [routes]="['Kullanıcılar']">
+    <app-section sectionTitle="Kullanıcı Listesi">
         <div class="form-group row">
             <div class="col-9">
                 <button class="btn btn-dark" data-toggle="modal" data-target="#createModal">
                     <i class="fa-solid fa-plus me-1"></i>
-                    Example Ekle
+                    Kullanıcı Ekle
                 </button>
             </div>
 
@@ -18,17 +18,19 @@
                 <thead>
                     <tr>
                         <th>#</th>
-                        <th>Alan 1</th>
-                        <th>Alan 2</th>
+                        <th>Ad Soyad</th>
+                        <th>Kullanıcı Adı</th>
+                        <th>Mail Adresi</th>
                         <th>İşlemler</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @for(data of examples | example: search ;track data){
+                    @for(data of users | user: search ;track data){
                     <tr>
                         <td>{{$index + 1}}</td>
-                        <td>{{data.field1}}</td>
-                        <td>{{data.field2}}</td>
+                        <td>{{data.fullName}}</td>
+                        <td>{{data.userName}}</td>
+                        <td>{{data.email}}</td>
                         <td>
                             <button data-toggle="modal" data-target="#updateModal" (click)="get(data)" class="btn btn-outline-primary btn-sm me-1">
                                 <i class="fa-solid fa-edit"></i>
@@ -50,7 +52,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5">Example Ekleme Formu</h1>
+                <h1 class="modal-title fs-5">Kullanıcı Ekleme Formu</h1>
                 <button type="button" #createModalCloseBtn class="btn btn-outline-danger" data-dismiss="modal">
                     <i class="fa-solid fa-x"></i>
                 </button>
@@ -58,16 +60,32 @@
             <form formValidate #createForm="ngForm" autocomplete="off" (ngSubmit)="create(createForm)">
                 <div class="modal-body">
                     <div class="form-group">
-                        <label>Alan 1</label>
-                        <input type="text" required minlength="3" [(ngModel)]="createModel.field1" class="form-control" name="field1">
+                        <label>Ad</label>
+                        <input type="text" required minlength="3" [(ngModel)]="createModel.firstName" class="form-control" name="firstName">
                         <div class="invalid-feedback"></div>
                     </div>
                     
                     <div class="form-group mt-2">
-                        <label>Alan 2</label>
-                        <input type="text" required minlength="3" [(ngModel)]="createModel.field2" class="form-control" name="field2">
+                        <label>Soyad</label>
+                        <input type="text" required minlength="3" [(ngModel)]="createModel.lastName" class="form-control" name="lastName">
                         <div class="invalid-feedback"></div>
-                    </div>                  
+                    </div>     
+                    <div class="form-group mt-2">
+                        <label>User Name</label>
+                        <input type="text" required minlength="3" [(ngModel)]="createModel.userName" class="form-control" name="userName">
+                        <div class="invalid-feedback"></div>
+                    </div>   
+                    
+                    <div class="form-group mt-2">
+                        <label>Mail Adresi</label>
+                        <input type="text" required minlength="3" [(ngModel)]="createModel.email" class="form-control" name="email">
+                        <div class="invalid-feedback"></div>
+                    </div> 
+                    <div class="form-group mt-2">
+                        <label>Şifre</label>
+                        <input type="password" required minlength="3" [(ngModel)]="createModel.password" class="form-control" name="password">
+                        <div class="invalid-feedback"></div>
+                    </div> 
 
                 </div>
                 <div class="modal-footer">                    
@@ -83,7 +101,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5">Example Güncelleme Formu</h1>
+                <h1 class="modal-title fs-5">Kullanıcı Güncelleme Formu</h1>
                 <button type="button" #updateModalCloseBtn class="btn btn-outline-danger" data-dismiss="modal">
                     <i class="fa-solid fa-x"></i>
                 </button>
@@ -91,16 +109,31 @@
             <form formValidate #updateForm="ngForm" autocomplete="off" (ngSubmit)="update(updateForm)">
                 <div class="modal-body">
                     <div class="form-group">
-                        <label>Alan 1</label>
-                        <input type="text" required minlength="3" [(ngModel)]="updateModel.field1" class="form-control" name="updateField1">
+                        <label>İsim</label>
+                        <input type="text" required minlength="3" [(ngModel)]="updateModel.firstName" class="form-control" name="updatefirstName">
                         <div class="invalid-feedback"></div>
                     </div>                                       
                     
                     <div class="form-group">
-                        <label>Alan 2</label>
-                        <input type="text" required minlength="3" [(ngModel)]="updateModel.field2" class="form-control" name="updateField2">
+                        <label>Soy İsim</label>
+                        <input type="text" required minlength="3" [(ngModel)]="updateModel.lastName" class="form-control" name="updatelastName">
                         <div class="invalid-feedback"></div>
                     </div>  
+                    <div class="form-group">
+                        <label>Kullanıcı Adı</label>
+                        <input type="text" required minlength="3" [(ngModel)]="updateModel.userName" class="form-control" name="updateuserName">
+                        <div class="invalid-feedback"></div>
+                    </div>  
+                    <div class="form-group">
+                        <label>Mail Adresi</label>
+                        <input type="text" required minlength="3" [(ngModel)]="updateModel.email" class="form-control" name="updateemail">
+                        <div class="invalid-feedback"></div>
+                    </div>  
+                    <div class="form-group mt-2">
+                        <label>Şifre</label>
+                        <input type="password" required minlength="3" [(ngModel)]="updateModel.password" class="form-control" name="updatepassword">
+                        <div class="invalid-feedback"></div>
+                    </div> 
                 </div>
                 <div class="modal-footer">                    
                     <button type="submit" class="btn btn-primary w-100">Güncelle</button>

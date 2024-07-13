@@ -5,23 +5,25 @@ import { ExampleModel } from '../../models/example.model';
 import { HttpService } from '../../services/http.service';
 import { SwalService } from '../../services/swal.service';
 import { NgForm } from '@angular/forms';
+import { UserPipe } from '../../pipes/user.pipe';
+import { UserModel } from '../../models/user.model';
 
 @Component({
   selector: 'app-examples',
   standalone: true,
-  imports: [SharedModule, ExamplePipe],
+  imports: [SharedModule, UserPipe],
   templateUrl: './users.component.html',
   styleUrl: './users.component.css'
 })
-export class ExamplesComponent {
-  examples: ExampleModel[] = [];
+export class UsersComponent {
+  users: UserModel[] = [];
   search:string = "";
 
   @ViewChild("createModalCloseBtn") createModalCloseBtn: ElementRef<HTMLButtonElement> | undefined;
   @ViewChild("updateModalCloseBtn") updateModalCloseBtn: ElementRef<HTMLButtonElement> | undefined;
 
-  createModel:ExampleModel = new ExampleModel();
-  updateModel:ExampleModel = new ExampleModel();
+  createModel:UserModel = new UserModel();
+  updateModel:UserModel = new UserModel();
 
   constructor(
     private http: HttpService,
@@ -33,38 +35,39 @@ export class ExamplesComponent {
   }
 
   getAll(){
-    this.http.post<ExampleModel[]>("Examples/GetAll",{},(res)=> {
-      this.examples = res;
+    this.http.post<UserModel[]>("Users/GetAll",{},(res)=> {
+      this.users = res;
     });
   }
 
   create(form: NgForm){
     if(form.valid){
-      this.http.post<string>("Examples/Create",this.createModel,(res)=> {
+      this.http.post<string>("Users/Create",this.createModel,(res)=> {
         this.swal.callToast(res);
-        this.createModel = new ExampleModel();
+        this.createModel = new UserModel();
         this.createModalCloseBtn?.nativeElement.click();
         this.getAll();
       });
     }
   }
 
-  deleteById(model: ExampleModel){
-    this.swal.callSwal("Veriyi Sil?",`${model.field1} verisini silmek istiyor musunuz?`,()=> {
-      this.http.post<string>("Examples/DeleteById",{id: model.id},(res)=> {
+  deleteById(model: UserModel){
+    this.swal.callSwal("Kullanıcıyı Sil?",`${model.fullName} verisini silmek istiyor musunuz?`,()=> {
+      this.http.post<string>("Users/Delete",{id: model.id},(res)=> {
         this.getAll();
         this.swal.callToast(res,"info");
+        this.getAll();
       });
     })
   }
 
-  get(model: ExampleModel){
+  get(model: UserModel){
     this.updateModel = {...model};
   }
 
   update(form: NgForm){
     if(form.valid){
-      this.http.post<string>("Examples/Update",this.updateModel,(res)=> {
+      this.http.post<string>("Users/Update",this.updateModel,(res)=> {
         this.swal.callToast(res,"info");
         this.updateModalCloseBtn?.nativeElement.click();
         this.getAll();
