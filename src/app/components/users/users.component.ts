@@ -46,7 +46,6 @@ export class UsersComponent {
         this.swal.callToast(res);
         this.createModel = new UserModel();
         this.createModalCloseBtn?.nativeElement.click();
-        this.getAll();
       });
     }
   }
@@ -67,6 +66,7 @@ export class UsersComponent {
 
   update(form: NgForm){
     if(form.valid){
+      if(this.updateModel.password==="") this.updateModel.password=null;
       this.http.post<string>("Users/Update",this.updateModel,(res)=> {
         this.swal.callToast(res,"info");
         this.updateModalCloseBtn?.nativeElement.click();
