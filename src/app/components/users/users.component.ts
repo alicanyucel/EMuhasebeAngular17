@@ -1,7 +1,5 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { SharedModule } from '../../modules/shared.module';
-import { ExamplePipe } from '../../pipes/example.pipe';
-import { ExampleModel } from '../../models/example.model';
 import { HttpService } from '../../services/http.service';
 import { SwalService } from '../../services/swal.service';
 import { NgForm } from '@angular/forms';
@@ -55,7 +53,6 @@ export class UsersComponent {
       this.http.post<string>("Users/Delete",{id: model.id},(res)=> {
         this.getAll();
         this.swal.callToast(res,"info");
-        this.getAll();
       });
     })
   }

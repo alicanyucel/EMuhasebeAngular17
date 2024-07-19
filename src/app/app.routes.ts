@@ -4,13 +4,17 @@ import { LayoutsComponent } from './components/layouts/layouts.component';
 import { HomeComponent } from './components/home/home.component';
 import { inject } from '@angular/core';
 import { AuthService } from './services/auth.service';
-import { ExamplesComponent } from './components/examples/examples.component';
 import { UsersComponent } from './components/users/users.component';
+import { ConfirmEmailComponent } from './components/confirm-email/confirm-email.component';
 
 export const routes: Routes = [
     {
         path: "login",
         component: LoginComponent
+    },
+    {
+     path:"confirm-email/:email",
+     component:ConfirmEmailComponent
     },
     {
         path: "",
