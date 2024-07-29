@@ -1,13 +1,14 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { SharedModule } from '../../modules/shared.module';
+import { UserPipe } from '../../pipes/user.pipe';
+import { UserModel } from '../../models/user.model';
 import { HttpService } from '../../services/http.service';
 import { SwalService } from '../../services/swal.service';
 import { NgForm } from '@angular/forms';
-import { UserPipe } from '../../pipes/user.pipe';
-import { UserModel } from '../../models/user.model';
+import { CompanyModel } from '../../models/company.model';
 
 @Component({
-  selector: 'app-examples',
+  selector: 'app-users',
   standalone: true,
   imports: [SharedModule, UserPipe],
   templateUrl: './users.component.html',
@@ -15,6 +16,7 @@ import { UserModel } from '../../models/user.model';
 })
 export class UsersComponent {
   users: UserModel[] = [];
+  companies: CompanyModel[] = [];
   search:string = "";
 
   @ViewChild("createModalCloseBtn") createModalCloseBtn: ElementRef<HTMLButtonElement> | undefined;
@@ -30,11 +32,18 @@ export class UsersComponent {
 
   ngOnInit(): void {
     this.getAll();
+    this.getAllCompanies();
   }
 
   getAll(){
     this.http.post<UserModel[]>("Users/GetAll",{},(res)=> {
       this.users = res;
+    });
+  }
+
+  getAllCompanies(){
+    this.http.post<CompanyModel[]>("Companies/GetAll",{},(res)=> {
+      this.companies = res;
     });
   }
 
@@ -44,13 +53,14 @@ export class UsersComponent {
         this.swal.callToast(res);
         this.createModel = new UserModel();
         this.createModalCloseBtn?.nativeElement.click();
+        this.getAll();
       });
     }
   }
 
   deleteById(model: UserModel){
-    this.swal.callSwal("Kullanıcıyı Sil?",`${model.fullName} verisini silmek istiyor musunuz?`,()=> {
-      this.http.post<string>("Users/Delete",{id: model.id},(res)=> {
+    this.swal.callSwal("Kullanıcıyı Sil?",`${model.fullName} kullanıcısını silmek istiyor musunuz?`,()=> {
+      this.http.post<string>("Users/DeleteById",{id: model.id},(res)=> {
         this.getAll();
         this.swal.callToast(res,"info");
       });
@@ -59,11 +69,13 @@ export class UsersComponent {
 
   get(model: UserModel){
     this.updateModel = {...model};
+    this.updateModel.companyIds = this.updateModel.companyUsers.map(value => value.companyId);
   }
 
   update(form: NgForm){
     if(form.valid){
-      if(this.updateModel.password==="") this.updateModel.password=null;
+      if(this.updateModel.password === "") this.updateModel.password = null;
+      
       this.http.post<string>("Users/Update",this.updateModel,(res)=> {
         this.swal.callToast(res,"info");
         this.updateModalCloseBtn?.nativeElement.click();

@@ -19,6 +19,10 @@ export class ErrorService {
         this.swal.callToast("API adresine ulaşılamıyor","error");
         break;        
       
+      case 400:
+        this.swal.callToast("Gönderilen parameterlerden biri eksik!","error");
+        break;
+
       case 403:
         let errorMessage = "";
         for(const e of err.error.ErrorMessages){
@@ -33,7 +37,11 @@ export class ErrorService {
         break;
         
       case 500:
-        this.swal.callToast(err.error.errorMessages[0], "error");
+        if(err.error.ErrorMessages != undefined){
+          this.swal.callToast(err.error.ErrorMessages[0], "error");
+        }else{
+          this.swal.callToast(err.error.errorMessages[0], "error");
+        }
         break;
 
       

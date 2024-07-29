@@ -11,8 +11,8 @@ export class UserPipe implements PipeTransform {
     if(!search) return value;
 
     return value.filter(p=> 
-      p.firstName.toLocaleLowerCase().includes(search.toLocaleLowerCase()) ||
-      p.lastName.toLocaleLowerCase().includes(search.toLocaleLowerCase()) ||
+      p.fullName.toLocaleLowerCase().includes(search.toLocaleLowerCase()) ||
+      p.userName.toLocaleLowerCase().includes(search.toLocaleLowerCase()) || 
       p.email.toLocaleLowerCase().includes(search.toLocaleLowerCase())
     );
   }
